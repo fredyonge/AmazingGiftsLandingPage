@@ -1,0 +1,31 @@
+{
+  "files": {
+    "app.js": "/AmazingGiftsLandingPage/static/js/app.4c95bed7.chunk.js",
+    "app.js.map": "/AmazingGiftsLandingPage/static/js/app.4c95bed7.chunk.js.map",
+    "runtime~app.js": "/AmazingGiftsLandingPage/static/js/runtime~app.0530c778.js",
+    "runtime~app.js.map": "/AmazingGiftsLandingPage/static/js/runtime~app.0530c778.js.map",
+    "static/js/2.b129cfed.chunk.js": "/AmazingGiftsLandingPage/static/js/2.b129cfed.chunk.js",
+    "static/js/2.b129cfed.chunk.js.map": "/AmazingGiftsLandingPage/static/js/2.b129cfed.chunk.js.map",
+    "fonts/EBGaramond-Bold.ttf": "/AmazingGiftsLandingPage/./fonts/EBGaramond-Bold.ttf",
+    "fonts/Montserrat-Bold.ttf": "/AmazingGiftsLandingPage/./fonts/Montserrat-Bold.ttf",
+    "fonts/Montserrat-Medium.ttf": "/AmazingGiftsLandingPage/./fonts/Montserrat-Medium.ttf",
+    "fonts/Montserrat-Regular.ttf": "/AmazingGiftsLandingPage/./fonts/Montserrat-Regular.ttf",
+    "favicon-16.png": "/AmazingGiftsLandingPage/favicon-16.png",
+    "favicon-32.png": "/AmazingGiftsLandingPage/favicon-32.png",
+    "favicon.ico": "/AmazingGiftsLandingPage/favicon.ico",
+    "index.html": "/AmazingGiftsLandingPage/index.html",
+    "manifest.json": "/AmazingGiftsLandingPage/manifest.json",
+    "serve.json": "/AmazingGiftsLandingPage/serve.json",
+    "static/js/2.b129cfed.chunk.js.LICENSE.txt": "/AmazingGiftsLandingPage/static/js/2.b129cfed.chunk.js.LICENSE.txt",
+    "static/media/bg.png": "/AmazingGiftsLandingPage/static/media/bg.7da0a45a.png",
+    "static/media/bowser.png": "/AmazingGiftsLandingPage/static/media/bowser.4ba9aedf.png",
+    "static/media/gift.png": "/AmazingGiftsLandingPage/static/media/gift.d364ef11.png",
+    "static/media/ladybug.png": "/AmazingGiftsLandingPage/static/media/ladybug.1e6045ac.png",
+    "static/media/logo-ignite.png": "/AmazingGiftsLandingPage/static/media/logo-ignite.5c0bc1b0.png"
+  },
+  "entrypoints": [
+    "static/js/runtime~app.0530c778.js",
+    "static/js/2.b129cfed.chunk.js",
+    "static/js/app.4c95bed7.chunk.js"
+  ]
+}
