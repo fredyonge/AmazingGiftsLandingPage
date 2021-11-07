@@ -19,6 +19,14 @@ import { useBackButtonHandler, AppNavigator, canExit, useNavigationPersistence }
 import { RootStore, RootStoreProvider, setupRootStore } from "./models"
 import { ToggleStorybook } from "../storybook/toggle-storybook"
 import { ErrorBoundary } from "./screens/error/error-boundary"
+import { Logs } from "expo"
+
+/**
+ * This is the root component of our app.
+ */
+import { Platform } from "react-native"
+
+import { initializeApp } from "firebase/app"
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
@@ -26,9 +34,42 @@ import { ErrorBoundary } from "./screens/error/error-boundary"
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
 
-/**
- * This is the root component of our app.
- */
+const firebaseConfig = {
+  apiKey: "AIzaSyDnYjlo6qoXwhQH8FyMGe8qkLwnxQCJYN0",
+  authDomain: "amazing-gifts-314f9.firebaseapp.com",
+  projectId: "amazing-gifts-314f9",
+  storageBucket: "amazing-gifts-314f9.appspot.com",
+  messagingSenderId: "971722556677",
+  appId: "1:971722556677:web:4b43f48a6afb0ce402a36c",
+  measurementId: "G-6KXLC4CPX0",
+}
+
+const app = initializeApp(firebaseConfig)
+// const analytics = getAnalytics(app);
+
+const noGlow = `
+ textarea, select, input, button {
+   -webkit-appearance: none;
+   outline: none!important;
+ }
+ textarea:focus, select:focus, input:focus, button:focus {
+   -webkit-appearance: none;
+   outline: none!important;
+ }
+ `
+
+export const injectWebCss = () => {
+  // Only on web
+  if (!Platform.OS == "web") return
+
+  // Inject style
+  const style = document.createElement("style")
+  style.textContent = `textarea, select, input, button { outline: none!important; }`
+  return document.head.append(style)
+}
+
+// 👉 And this in the App.js file
+injectWebCss()
 function App() {
   const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
 
@@ -47,6 +88,8 @@ function App() {
     })()
   }, [])
 
+  // random try
+  Logs.enableExpoCliLogging()
   // Before we show the app, we have to wait for our state to be ready.
   // In the meantime, don't render anything. This will be the background
   // color set in native by rootView's background color.
@@ -57,18 +100,16 @@ function App() {
 
   // otherwise, we're ready to render the app
   return (
-    <ToggleStorybook>
-      <RootStoreProvider value={rootStore}>
-        <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-          <ErrorBoundary catchErrors={"always"}>
-            <AppNavigator
-              initialState={initialNavigationState}
-              onStateChange={onNavigationStateChange}
-            />
-          </ErrorBoundary>
-        </SafeAreaProvider>
-      </RootStoreProvider>
-    </ToggleStorybook>
+    <RootStoreProvider value={rootStore}>
+      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+        <ErrorBoundary catchErrors={"always"}>
+          <AppNavigator
+            initialState={initialNavigationState}
+            onStateChange={onNavigationStateChange}
+          />
+        </ErrorBoundary>
+      </SafeAreaProvider>
+    </RootStoreProvider>
   )
 }
 

@@ -1,5 +1,17 @@
-import React, { FC } from "react"
-import { View, ViewStyle, TextStyle, ImageStyle, SafeAreaView } from "react-native"
+import React, { FC, useState } from "react"
+import {
+  View,
+  ViewStyle,
+  TextStyle,
+  ImageStyle,
+  SafeAreaView,
+  ScrollView,
+  Dimensions,
+  useWindowDimensions,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+} from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
 import {
@@ -9,9 +21,18 @@ import {
   Text,
   GradientBackground,
   AutoImage as Image,
+  SpacerVert,
+  EdgeMargins,
+  SpacerHor,
 } from "../../components"
 import { color, spacing, typography } from "../../theme"
 import { NavigatorParamList } from "../../navigators"
+import { txtWb } from "../../theme/typography"
+import { s } from "../../theme/styles"
+import { IMAGE } from "../../../assets/images/index"
+import { TextInput } from "react-native-gesture-handler"
+import { getAuth, signInAnonymously } from "firebase/auth"
+import { getFirestore, setDoc, doc } from "firebase/firestore"
 
 const bowserLogo = require("./bowser.png")
 
@@ -26,6 +47,7 @@ const TEXT: TextStyle = {
 }
 const BOLD: TextStyle = { fontWeight: "bold" }
 const HEADER: TextStyle = {
+  fontFamily: "Garamond-Bold",
   paddingTop: spacing[3],
   paddingBottom: spacing[4] + spacing[1],
   paddingHorizontal: 0,
@@ -85,44 +107,120 @@ const FOOTER_CONTENT: ViewStyle = {
   paddingVertical: spacing[4],
   paddingHorizontal: spacing[4],
 }
-
 export const WelcomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> = observer(
   ({ navigation }) => {
-    const nextScreen = () => navigation.navigate("demo")
+    const { width, height } = useWindowDimensions()
+    // const nextScreen = () => navigation.navigate("demo")
+    const [loading, setLoading] = useState("idle")
+    const [email, setEmail] = useState("")
+
+    const [log, setLog] = useState("")
+    const onPress = async () => {
+      setLoading("pending")
+      try {
+        const auth = getAuth()
+        const user = auth.currentUser
+        if (user) {
+          const firestore = getFirestore()
+          await setDoc(doc(firestore, "Nutzer", "protoypeEmailAdresses"), {
+            email: email,
+          })
+          setEmail("")
+          setLoading("finished")
+        } else {
+          signInAnonymously(auth)
+            .then(async () => {
+              const firestore = getFirestore()
+              await setDoc(doc(firestore, "Nutzer", "protoypeEmailAdresses"), {
+                email: email,
+              })
+              setEmail("")
+              setLoading("finished")
+              // Signed in..
+            })
+            .catch((error) => {
+              const errorCode = error.code
+              const errorMessage = error.message
+              // ...
+            })
+        }
+      } catch (e) {
+        // setLog(e)
+      }
+    }
 
     return (
-      <View testID="WelcomeScreen" style={FULL}>
-        <GradientBackground colors={["#422443", "#281b34"]} />
-        <Screen style={CONTAINER} preset="scroll" backgroundColor={color.transparent}>
-          <Header headerTx="welcomeScreen.poweredBy" style={HEADER} titleStyle={HEADER_TITLE} />
-          <Text style={TITLE_WRAPPER}>
-            <Text style={TITLE} text="Your new app, " />
-            <Text style={ALMOST} text="almost" />
-            <Text style={TITLE} text="!" />
-          </Text>
-          <Text style={TITLE} preset="header" tx="welcomeScreen.readyForLaunch" />
-          <Image source={bowserLogo} style={BOWSER} />
-          <Text style={CONTENT}>
-            This probably isn't what your app is going to look like. Unless your designer handed you
-            this screen and, in that case, congrats! You're ready to ship.
-          </Text>
-          <Text style={CONTENT}>
-            For everyone else, this is where you'll see a live preview of your fully functioning app
-            using Ignite.
-          </Text>
-        </Screen>
-        <SafeAreaView style={FOOTER}>
-          <View style={FOOTER_CONTENT}>
-            <Button
-              testID="next-screen-button"
-              style={CONTINUE}
-              textStyle={CONTINUE_TEXT}
-              tx="welcomeScreen.continue"
-              onPress={nextScreen}
-            />
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={(s.justifyCenter, s.flex1)}>
+          <Header text={"amazing.gifts"} />
+          <View style={[s.rowDirection, s.flex1, { backgroundColor: color.background }]}>
+            <EdgeMargins />
+            <View style={s.flex1}>
+              <View style={[s.rowDirection, s.flex1]}>
+                <View style={[s.flex1, s.justifyCenter]}>
+                  <SpacerVert size={24} />
+                  <Text style={txtWb.bigClaim}>Großartige Geschenke</Text>
+                  <Text style={txtWb.subClaimText}>Bei uns findest du für jeden was</Text>
+                  <SpacerVert size={32} />
+                  <Text style={[txtWb.body, s.flexWrap]}>
+                    amazing.gifts betreibt keinen eigenen Shop. Wir sammeln die besten Geschenkideen
+                    aus dem Internet. Hier findest du für jeden ein grossartiges Geschenk
+                  </Text>
+                  <SpacerVert size={16} />
+                  <View
+                    style={{
+                      backgroundColor: color.palette.white,
+                      flexDirection: "row",
+                    }}
+                  >
+                    <TextInput
+                      style={{ marginHorizontal: 16, alignSelf: "center", flex: 1 }}
+                      placeholder={"Gib mir bescheid sobald ich Geschenke finden kann"}
+                      onChangeText={(e) => setEmail(e)}
+                      value={email}
+                    />
+                    <TouchableOpacity
+                      style={{
+                        marginLeft: "auto",
+                        height: "100%",
+                        backgroundColor: "green",
+                        paddingVertical: 16,
+                        paddingHorizontal: 16,
+                      }}
+                      onPress={onPress}
+                    >
+                      {loading === "pending" ? (
+                        <ActivityIndicator size={"small"} color={color.palette.white} />
+                      ) : (
+                        <Text style={txtWb.button}>Benachrichtigen</Text>
+                      )}
+                    </TouchableOpacity>
+                  </View>
+                  <SpacerVert size={32} />
+                </View>
+                {width > 800 ? (
+                  <>
+                    <SpacerHor size={24} />
+                    <View style={{ flex: 1 }}>
+                      <Image source={IMAGE.gift} style={{ width: "100%", height: "100%" }} />
+                    </View>
+                  </>
+                ) : null}
+              </View>
+              <SpacerVert size={32} />
+              <View style={{ borderWidth: 1, borderColor: color.palette.black }} />
+              <SpacerVert size={32} />
+              <Text style={txtWb.body}>Deine Geschenke auf amazing.gifts?</Text>
+              <SpacerVert size={24} />
+              <Text style={[txtWb.body, { color: color.palette.lighterGrey }]}>email:</Text>
+              <SpacerVert size={16} />
+              <Text style={txtWb.clickable}>partner@amazing.gifts</Text>
+              <SpacerVert size={48} />
+            </View>
+            <EdgeMargins />
           </View>
-        </SafeAreaView>
-      </View>
+        </View>
+      </ScrollView>
     )
   },
 )

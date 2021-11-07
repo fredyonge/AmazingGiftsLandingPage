@@ -1,0 +1,26 @@
+import { StyleSheet } from "react-native"
+
+export const s = StyleSheet.create({
+  alignCenter: { alignItems: "center" },
+  alignEnd: { alignItems: "flex-end" },
+  alignStart: { alignItems: "flex-start" },
+  centerContent: { alignItems: "center", justifyContent: "center" },
+  centerContentFlex1: { alignItems: "center", flex: 1, justifyContent: "center" },
+  flex1: { flex: 1 },
+  flex1AndBackgroundCol: { flex: 1 },
+  flexShrink: { flexShrink: 1 },
+  flexWrap: { flexWrap: "wrap" },
+  heightFull: { height: "100%" },
+  iconContainer: { height: 50, width: 50 },
+  image: { borderRadius: 30, resizeMode: "cover" },
+  justifyCenter: { justifyContent: "center" },
+  justifyEnd: { justifyContent: "flex-end" },
+  justifyStart: { justifyContent: "flex-start" },
+  marginBotAuto: { marginBottom: "auto" },
+  marginLeftAuto: { marginLeft: "auto" },
+  marginRightAuto: { marginRight: "auto" },
+  marginTopAuto: { marginTop: "auto" },
+  rootContainer: { flex: 1 },
+  rowDirection: { flexDirection: "row" },
+  widthFull: { width: "100%" },
+})

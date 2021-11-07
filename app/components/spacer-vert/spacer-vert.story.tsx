@@ -2,14 +2,14 @@ import * as React from "react"
 import { storiesOf } from "@storybook/react-native"
 import { StoryScreen, Story, UseCase } from "../../../storybook/views"
 import { color } from "../../theme"
-import { Header } from "./header"
+import { SpacerVert } from "./spacer-vert"
 
-storiesOf("Header", module)
+storiesOf("SpacerVert", module)
   .addDecorator((fn) => <StoryScreen>{fn()}</StoryScreen>)
   .add("Style Presets", () => (
     <Story>
       <UseCase text="Primary" usage="The primary.">
-        <Header style={{ backgroundColor: color.error }} />
+        <SpacerVert style={{ backgroundColor: color.error }} />
       </UseCase>
     </Story>
   ))

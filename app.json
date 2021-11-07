@@ -13,14 +13,14 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "web": {
-      "favicon": "./assets/images/favicon.png"
+      "name": "amazing.gifts",
+      "favicon": "./assets/images/favicon.png",
+      "description": "Die besten Geschenkideen für die besten Geschenke auf amazing.gifts"
     }
   }
 }
